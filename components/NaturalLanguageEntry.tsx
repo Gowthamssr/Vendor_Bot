@@ -47,9 +47,9 @@ export default function NaturalLanguageEntry() {
   }
 
   const examples = [
-    "Sold 5 bags of rice at $10 each today",
+    "Sold 5 bags of rice at $10 each DD-MM-YY",
     "10 bottles of coke for $2.50 each on 2024-01-15",
-    "3 loaves of bread at $3.99 per loaf yesterday",
+    "3 loaves of bread at $3.99 per loaf DD-MM-YY",
     "20 apples sold at $1.25 each on January 10th"
   ]
 
