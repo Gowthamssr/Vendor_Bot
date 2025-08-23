@@ -50,7 +50,7 @@ export async function extractSaleDataFromText(text: string): Promise<ExtractedSa
     const textResponse = response.text()
     
     // Try to parse the JSON response
-    const jsonMatch = textResponse.match(/\{.*\}/s)
+    const jsonMatch = textResponse.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       return JSON.parse(jsonMatch[0])
     }
