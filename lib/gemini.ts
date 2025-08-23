@@ -118,11 +118,13 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     const result = await model.generateContent(prompt)
     const response = await result.response
     return response.text()
-  } catch (error) {
-    console.error('Error generating insight:', error)
+  } catch (error: unknown) {
+    console.error('Error generating insight:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : String(error);
     
     // Check if it's a rate limit error and try with a different key
-    if (error.toString().includes('429') || error.toString().includes('quota')) {
+    if (errorMessage.includes('429') || errorMessage.includes('quota')) {
       try {
         console.log('Rate limit hit, trying with different API key...')
         const genAI = createGenAI() // This will use a different key
