@@ -69,8 +69,7 @@ export function generateSimpleResponse(question: string, salesData: any[]): LLMR
       return acc
     }, {} as Record<string, number>)
     
-    const topProduct = Object.entries(productStats)
-      .sort(([,a], [,b]) => b - a)[0]
+    const topProduct = Object.entries<number>(productStats).sort((a, b) => b[1] - a[1])[0]
     
     return {
       text: `Your best-selling product is ${topProduct[0]} with ${topProduct[1]} units sold.`,
