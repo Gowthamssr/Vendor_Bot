@@ -1,73 +1,42 @@
 import { Pool } from 'pg'
 
-// Initial connection without database name to create database
-const initialPool = new Pool({
-  connectionString: process.env.DATABASE_URL?.replace(/\/[^\/]+$/, '/postgres'), // Connect to default postgres database
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-})
-
-// Main application pool
+// Main application pool with explicit configuration
 const appPool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  user: 'neondb_owner',
+  password: 'npg_teHVJd0MrmW5',
+  host: 'ep-steep-sky-a121ba2b-pooler.ap-southeast-1.aws.neon.tech',
+  database: 'neondb',
+  port: 5432,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  // Add connection timeout
+  connectionTimeoutMillis: 5000,
+  // Add idle timeout
+  idleTimeoutMillis: 30000,
 })
 
 export async function initializeDatabase() {
+  const client = await appPool.connect()
   try {
     console.log('🔄 Initializing database...')
     
-    // Extract database name from DATABASE_URL
-    const dbName = process.env.DATABASE_URL?.split('/').pop()?.split('?')[0]
-    if (!dbName) {
-      throw new Error('Database name not found in DATABASE_URL')
-    }
-
-    // Check if database exists
-    const dbExists = await checkDatabaseExists(dbName)
+    // Enable pgvector extension
+    await client.query('CREATE EXTENSION IF NOT EXISTS vector')
     
-    if (!dbExists) {
-      console.log(`📦 Creating database: ${dbName}`)
-      await createDatabase(dbName)
-    } else {
-      console.log(`✅ Database ${dbName} already exists`)
-    }
-
     // Initialize the application database
-    await initializeAppDatabase()
+    await initializeAppDatabase(client)
     
     console.log('✅ Database initialization completed successfully!')
   } catch (error) {
     console.error('❌ Database initialization failed:', error)
     throw error
   } finally {
-    await initialPool.end()
+    client.release()
   }
 }
 
-async function checkDatabaseExists(dbName: string): Promise<boolean> {
-  try {
-    const result = await initialPool.query(
-      "SELECT 1 FROM pg_database WHERE datname = $1",
-      [dbName]
-    )
-    return result.rows.length > 0
-  } catch (error) {
-    console.error('Error checking database existence:', error)
-    return false
-  }
-}
-
-async function createDatabase(dbName: string) {
-  try {
-    await initialPool.query(`CREATE DATABASE "${dbName}"`)
-    console.log(`✅ Database ${dbName} created successfully`)
-  } catch (error) {
-    console.error(`❌ Failed to create database ${dbName}:`, error)
-    throw error
-  }
-}
-
-async function initializeAppDatabase() {
+async function initializeAppDatabase(client: any) {
   try {
     // Try to enable pgvector extension (will fail gracefully if not available)
     console.log('🔧 Checking for pgvector extension...')

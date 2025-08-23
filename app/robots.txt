@@ -1,0 +1,14 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com'}/sitemap.xml
+
+# Disallow crawling of admin and API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+
+# Crawl-delay: 10  # Uncomment and adjust if needed to limit crawl rate
