@@ -1,4 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+//import node env
+
 
 // Support multiple API keys for fallback
 const getApiKey = (): string => {
@@ -31,7 +33,7 @@ export interface ExtractedSaleData {
 export async function extractSaleDataFromText(text: string): Promise<ExtractedSaleData | null> {
   try {
     const genAI = createGenAI()
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
     
     const prompt = `
     Extract sales data from the following text and return it as a JSON object with these exact fields:
@@ -65,7 +67,7 @@ export async function extractSaleDataFromText(text: string): Promise<ExtractedSa
 export async function generateSalesInsight(question: string, salesData: any[], conversationHistory: string[] = []): Promise<string> {
   try {
     const genAI = createGenAI()
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
     
     // Build context from conversation history
     const context = conversationHistory.length > 0 
@@ -128,7 +130,7 @@ export async function generateSalesInsight(question: string, salesData: any[], c
       try {
         console.log('Rate limit hit, trying with different API key...')
         const genAI = createGenAI() // This will use a different key
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
         
         const context = conversationHistory.length > 0 
           ? `\n\nPrevious conversation context:\n${conversationHistory.slice(-4).join('\n')}`
