@@ -1,28 +1,21 @@
 import { Pool } from 'pg'
 
 // Main application pool with explicit configuration
-// const appPool = new Pool({
-//   user: 'neondb_owner',
-//   password: 'npg_teHVJd0MrmW5',
-//   host: 'ep-steep-sky-a121ba2b-pooler.ap-southeast-1.aws.neon.tech',
-//   database: 'neondb',
-//   port: 5432,
-//   ssl: {
-//     rejectUnauthorized: false
-//   },
-//   // Add connection timeout
-//   connectionTimeoutMillis: 5000,
-//   // Add idle timeout
-//   idleTimeoutMillis: 30000,
-// })
-
 const appPool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  keepAlive: true,
-  connectionTimeoutMillis: 10000,
+  user: 'neondb_owner',
+  password: 'npg_teHVJd0MrmW5',
+  host: 'ep-steep-sky-a121ba2b-pooler.ap-southeast-1.aws.neon.tech',
+  database: 'neondb',
+  port: 5432,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  // Add connection timeout
+  connectionTimeoutMillis: 5000,
+  // Add idle timeout
   idleTimeoutMillis: 30000,
-});
+})
+
 
 
 export async function initializeDatabase() {
