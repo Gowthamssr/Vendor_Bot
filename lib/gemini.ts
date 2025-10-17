@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { getTodayYmdInTimeZone } from './date'
 //import node env
 
 
@@ -35,15 +36,24 @@ export async function extractSaleDataFromText(text: string): Promise<ExtractedSa
     const genAI = createGenAI()
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
     
+    const tz = 'Asia/Kolkata'
+    const todayYmd = getTodayYmdInTimeZone(tz)
+
     const prompt = `
+    Today is ${todayYmd}.
     Extract sales data from the following text and return it as a JSON object with these exact fields:
     - product_name: string (the name of the product)
     - quantity: number (how many units were sold)
     - price: number (price per unit)
-    - sale_date: string (date in YYYY-MM-DD format, use today's date if not specified)
-    
+    - sale_date: string (date in YYYY-MM-DD format)
+
+    DATE RULES:
+    - Interpret relative terms (e.g., today, yesterday, tomorrow, last Monday, 2 days ago) relative to TODAY (${todayYmd}) in the Asia/Kolkata timezone.
+    - If no date is provided, use TODAY (${todayYmd}).
+    - Always output sale_date as a concrete YYYY-MM-DD (no words).
+
     Text: "${text}"
-    
+
     Return only the JSON object, no additional text.
     `
     
@@ -69,6 +79,9 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     const genAI = createGenAI()
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
     
+    const tz = 'Asia/Kolkata'
+    const todayYmd = getTodayYmdInTimeZone(tz)
+    
     // Build context from conversation history
     const context = conversationHistory.length > 0 
       ? `\n\nPrevious conversation context:\n${conversationHistory.slice(-4).join('\n')}`
@@ -76,6 +89,9 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     
     const prompt = `
     You are a helpful and friendly sales analytics assistant. A vendor is asking about their sales data.
+    
+    TODAY (in Asia/Kolkata): ${todayYmd}
+    TIMEZONE: Asia/Kolkata
     
     Current Question: "${question}"
     ${context}
@@ -87,6 +103,11 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     2. Total revenue = sum of all individual sale revenues
     3. Average revenue per sale = total revenue ÷ number of sales
     4. Average price per unit = total revenue ÷ total quantity sold
+    
+    DATE INTERPRETATION RULES (VERY IMPORTANT):
+    1. Interpret relative dates (e.g., today, yesterday, last week) relative to TODAY (${todayYmd}) in Asia/Kolkata.
+    2. Use the sale_date field ONLY (format YYYY-MM-DD) for date filtering; ignore created_at timestamps.
+    3. Example: If TODAY=${todayYmd}, then "yesterday" = the calendar date one day before TODAY in Asia/Kolkata.
     
     CONTEXT UNDERSTANDING RULES:
     1. When user asks "what about yesterday" or similar follow-up questions, refer to the SAME PRODUCT from the previous question

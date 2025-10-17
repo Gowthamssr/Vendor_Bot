@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/lib/auth'
 import { createSale } from '@/lib/sales'
 import { extractSaleDataFromText } from '@/lib/gemini'
+import { parseToYMD } from '@/lib/date'
 import { z } from 'zod'
 
 const naturalLanguageSchema = z.object({
@@ -39,13 +40,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Normalize date (support words like "today"/"yesterday" or various formats)
+    const normalizedDate = parseToYMD(extractedData.sale_date) || new Date().toISOString().split('T')[0]
+
     // Create the sale record
     const sale = await createSale(
       decoded.userId,
       extractedData.product_name,
       extractedData.quantity,
       extractedData.price,
-      extractedData.sale_date
+      normalizedDate
     )
     
     return NextResponse.json({

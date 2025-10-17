@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Upload, FileSpreadsheet, Check, AlertCircle, Download } from 'lucide-react'
 import * as XLSX from 'xlsx'
+import { parseToYMD } from '@/lib/date'
 
 interface ExcelRow {
   product_name: string
@@ -76,23 +77,14 @@ export default function ExcelUpload() {
               
               // Validate data
               if (product_name && quantity && price && sale_date) {
-                // Convert date to YYYY-MM-DD format
-                let formattedDate = sale_date
-                if (sale_date instanceof Date) {
-                  formattedDate = sale_date.toISOString().split('T')[0]
-                } else if (typeof sale_date === 'string') {
-                  // Try to parse various date formats
-                  const date = new Date(sale_date)
-                  if (!isNaN(date.getTime())) {
-                    formattedDate = date.toISOString().split('T')[0]
-                  }
-                }
+                const normalizedDate = parseToYMD(sale_date)
+                if (!normalizedDate) return
                 
                 processedData.push({
                   product_name: String(product_name).trim(),
                   quantity: parseInt(quantity) || 0,
                   price: parseFloat(price) || 0,
-                  sale_date: formattedDate
+                  sale_date: normalizedDate
                 })
               }
             }
@@ -161,7 +153,7 @@ export default function ExcelUpload() {
             <ul className="space-y-1 text-xs">
               <li>• Column A: Product Name (text)</li>
               <li>• Column B: Quantity (number)</li>
-              <li>• Column C: Price (number)</li>
+              <li>• Column C: Price Whole(number)</li>
               <li>• Column D: Sale Date (YYYY-MM-DD format)</li>
             </ul>
           </div>

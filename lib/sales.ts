@@ -18,7 +18,8 @@ export async function createSale(
   saleDate: string
 ): Promise<Sale> {
   const result = await pool.query(
-    'INSERT INTO sales (vendor_id, product_name, quantity, price, sale_date) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    // Keep storage as-is, but normalize read paths; insert keeps provided date string
+    'INSERT INTO sales (vendor_id, product_name, quantity, price, sale_date) VALUES ($1, $2, $3, $4, $5) RETURNING id, vendor_id, product_name, quantity, price, to_char(((sale_date AT TIME ZONE \'Asia/Kolkata\')::date), \'YYYY-MM-DD\') as sale_date, created_at',
     [vendorId, productName, quantity, price, saleDate]
   )
   return result.rows[0]
@@ -26,7 +27,12 @@ export async function createSale(
 
 export async function getSalesByVendor(vendorId: string): Promise<Sale[]> {
   const result = await pool.query(
-    'SELECT * FROM sales WHERE vendor_id = $1 ORDER BY sale_date DESC',
+    `SELECT id, vendor_id, product_name, quantity, price,
+            to_char(((sale_date AT TIME ZONE 'Asia/Kolkata')::date), 'YYYY-MM-DD') as sale_date,
+            created_at
+     FROM sales
+     WHERE vendor_id = $1
+     ORDER BY ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) DESC`,
     [vendorId]
   )
   return result.rows
@@ -34,7 +40,12 @@ export async function getSalesByVendor(vendorId: string): Promise<Sale[]> {
 
 export async function getSalesByProduct(vendorId: string, productName: string): Promise<Sale[]> {
   const result = await pool.query(
-    'SELECT * FROM sales WHERE vendor_id = $1 AND LOWER(product_name) LIKE LOWER($2) ORDER BY sale_date DESC',
+    `SELECT id, vendor_id, product_name, quantity, price,
+            to_char(((sale_date AT TIME ZONE 'Asia/Kolkata')::date), 'YYYY-MM-DD') as sale_date,
+            created_at
+     FROM sales
+     WHERE vendor_id = $1 AND LOWER(product_name) LIKE LOWER($2)
+     ORDER BY ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) DESC`,
     [vendorId, `%${productName}%`]
   )
   return result.rows
@@ -42,7 +53,13 @@ export async function getSalesByProduct(vendorId: string, productName: string): 
 
 export async function getSalesByDateRange(vendorId: string, startDate: string, endDate: string): Promise<Sale[]> {
   const result = await pool.query(
-    'SELECT * FROM sales WHERE vendor_id = $1 AND sale_date BETWEEN $2 AND $3 ORDER BY sale_date DESC',
+    `SELECT id, vendor_id, product_name, quantity, price,
+            to_char(((sale_date AT TIME ZONE 'Asia/Kolkata')::date), 'YYYY-MM-DD') as sale_date,
+            created_at
+     FROM sales
+     WHERE vendor_id = $1
+       AND ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) BETWEEN $2::date AND $3::date
+     ORDER BY ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) DESC`,
     [vendorId, startDate, endDate]
   )
   return result.rows
@@ -50,7 +67,12 @@ export async function getSalesByDateRange(vendorId: string, startDate: string, e
 
 export async function getSalesByYear(vendorId: string, year: number): Promise<Sale[]> {
   const result = await pool.query(
-    'SELECT * FROM sales WHERE vendor_id = $1 AND EXTRACT(YEAR FROM sale_date) = $2 ORDER BY sale_date DESC',
+    `SELECT id, vendor_id, product_name, quantity, price,
+            to_char(((sale_date AT TIME ZONE 'Asia/Kolkata')::date), 'YYYY-MM-DD') as sale_date,
+            created_at
+     FROM sales
+     WHERE vendor_id = $1 AND EXTRACT(YEAR FROM (sale_date AT TIME ZONE 'Asia/Kolkata')) = $2
+     ORDER BY ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) DESC`,
     [vendorId, year]
   )
   return result.rows
@@ -58,7 +80,14 @@ export async function getSalesByYear(vendorId: string, year: number): Promise<Sa
 
 export async function getSalesByMonth(vendorId: string, year: number, month: number): Promise<Sale[]> {
   const result = await pool.query(
-    'SELECT * FROM sales WHERE vendor_id = $1 AND EXTRACT(YEAR FROM sale_date) = $2 AND EXTRACT(MONTH FROM sale_date) = $3 ORDER BY sale_date DESC',
+    `SELECT id, vendor_id, product_name, quantity, price,
+            to_char(((sale_date AT TIME ZONE 'Asia/Kolkata')::date), 'YYYY-MM-DD') as sale_date,
+            created_at
+     FROM sales
+     WHERE vendor_id = $1
+       AND EXTRACT(YEAR FROM (sale_date AT TIME ZONE 'Asia/Kolkata')) = $2
+       AND EXTRACT(MONTH FROM (sale_date AT TIME ZONE 'Asia/Kolkata')) = $3
+     ORDER BY ((sale_date AT TIME ZONE 'Asia/Kolkata')::date) DESC`,
     [vendorId, year, month]
   )
   return result.rows

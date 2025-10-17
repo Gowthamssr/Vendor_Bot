@@ -104,7 +104,7 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
   }
 
   return (
-    <div className={`flex flex-col h-[calc(100vh-280px)] sm:h-[calc(100vh-320px)] lg:h-[calc(100vh-360px)] ${
+    <div className={`flex flex-col h-full min-h-0 ${
       isMaximized ? 'max-w-none w-full' : 'max-w-4xl lg:max-w-none mx-auto'
     }`}>
       {/* Header */}
@@ -114,14 +114,14 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
         </div>
         <div>
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">AI Sales Assistant</h2>
-          <p className="text-sm text-slate-600">Ask me anything about your sales data</p>
+          <p className="text-sm text-slate-600">Ask me anything about your sales data (I may hallucinate sometimes)</p>
         </div>
       </div>
 
       {/* Messages */}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto space-y-4 mb-4 sm:mb-6 p-2 scrollbar-hide"
+        className="flex-1 overflow-y-auto space-y-4 mb-4 sm:mb-6 p-2 scrollbar-hide min-h-0"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none'
@@ -214,7 +214,7 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="flex space-x-2 sm:space-x-3">
+      <form onSubmit={handleSubmit} className="flex space-x-2 sm:space-x-3 mt-auto">
         <input
           type="text"
           value={input}
