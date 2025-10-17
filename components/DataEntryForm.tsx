@@ -64,7 +64,7 @@ export default function DataEntryForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto h-full overflow-y-auto scrollbar-none-mobile">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-6">
           <Plus className="h-6 w-6 text-primary-600 mr-3" />

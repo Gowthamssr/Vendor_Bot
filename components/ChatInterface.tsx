@@ -104,11 +104,11 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
   }
 
   return (
-    <div className={`flex flex-col h-full min-h-0 ${
+    <div className={`flex flex-col h-full ${
       isMaximized ? 'max-w-none w-full' : 'max-w-4xl lg:max-w-none mx-auto'
     }`}>
       {/* Header */}
-      <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+      <div className="flex items-center space-x-3 mb-2 sm:mb-4 flex-shrink-0">
         <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
           <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
         </div>
@@ -121,7 +121,7 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
       {/* Messages */}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto space-y-4 mb-4 sm:mb-6 p-2 scrollbar-hide min-h-0"
+        className="flex-1 overflow-y-auto space-y-4 mb-3 sm:mb-4 p-2 scrollbar-hide min-h-0"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none'
@@ -214,19 +214,19 @@ export default function ChatInterface({ isMaximized = false }: ChatInterfaceProp
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSubmit} className="flex space-x-2 sm:space-x-3 mt-auto">
+      <form onSubmit={handleSubmit} className="flex space-x-2 sm:space-x-3 flex-shrink-0 pb-6 sm:pb-0">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about your sales data..."
           disabled={isLoading}
-          className="flex-1 px-4 py-3 sm:px-5 sm:py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-slate-800 placeholder-slate-500 disabled:opacity-50"
+          className="flex-1 px-3 py-2 sm:px-5 sm:py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-slate-800 placeholder-slate-500 disabled:opacity-50 text-sm sm:text-base"
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="px-4 py-3 sm:px-5 sm:py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="px-3 py-2 sm:px-5 sm:py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0"
         >
           <Send className="h-4 w-4 sm:h-5 sm:w-5" />
         </button>

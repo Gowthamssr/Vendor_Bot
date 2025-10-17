@@ -136,7 +136,7 @@ export default function ExcelUpload() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto h-full overflow-y-auto scrollbar-none-mobile">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-6">
           <FileSpreadsheet className="h-6 w-6 text-primary-600 mr-3" />
@@ -220,7 +220,7 @@ export default function ExcelUpload() {
           {uploadedData.length > 0 && (
             <div className="mt-6">
               <h4 className="font-medium text-gray-900 mb-3">Preview ({uploadedData.length} records):</h4>
-              <div className="max-h-60 overflow-y-auto border border-gray-200 rounded-lg">
+              <div className="max-h-60 overflow-y-auto scrollbar-none-mobile border border-gray-200 rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>

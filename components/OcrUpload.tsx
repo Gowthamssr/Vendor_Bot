@@ -48,7 +48,7 @@ export default function OcrUpload() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto h-full overflow-y-auto scrollbar-none-mobile">
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center mb-6">
           <FileText className="h-6 w-6 text-primary-600 mr-3" />
@@ -112,7 +112,7 @@ export default function OcrUpload() {
       {items.length > 0 && (
         <div className="mt-6 bg-white rounded-lg shadow p-4">
           <h3 className="font-semibold text-gray-900 mb-3">Added items</h3>
-          <div className="max-h-60 overflow-y-auto border border-gray-200 rounded-lg">
+          <div className="max-h-60 overflow-y-auto scrollbar-none-mobile border border-gray-200 rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

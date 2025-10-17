@@ -15,10 +15,12 @@ interface User {
   email: string
 }
 
+type TabId = 'chat' | 'form' | 'natural' | 'excel' | 'ocr'
+
 export default function Dashboard() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
-  const [activeTab, setActiveTab] = useState<'chat' | 'form' | 'natural' | 'excel' | 'ocr'>('chat')
+  const [activeTab, setActiveTab] = useState<TabId>('chat')
   const [isLoading, setIsLoading] = useState(true)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isChatMaximized, setIsChatMaximized] = useState(false)
@@ -103,7 +105,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen h-screen flex flex-col overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="h-screen w-full flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-hidden">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200/60 shadow-sm">
         <div className="w-full mx-auto px-2 sm:px-3 lg:px-0">
@@ -180,16 +182,16 @@ export default function Dashboard() {
                     <p className="text-slate-500">{user.email}</p>
                   </div>
                 </div>
-              <a
-                href="/reports"
-                className="flex items-center justify-center space-x-2 bg-white/80 hover:bg-white backdrop-blur-sm border border-slate-200/60 hover:border-slate-300 text-slate-700 hover:text-slate-900 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-              >
-                <BarChart3 className="h-4 w-4" />
-                <span>Reports</span>
-              </a>
-              <button
-                  onClick={handleLogout}
+                <a
+                  href="/reports"
                   className="flex items-center justify-center space-x-2 bg-white/80 hover:bg-white backdrop-blur-sm border border-slate-200/60 hover:border-slate-300 text-slate-700 hover:text-slate-900 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <BarChart3 className="h-4 w-4" />
+                  <span>Reports</span>
+                </a>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center justify-center space-x-2 bg-white/80 hover:bg-white backdrop-blur-sm border border-slate-200/60 hover:border-slate-300 text-slate-700 hover:text-slate-900 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md w-full"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Sign Out</span>
@@ -201,7 +203,7 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content - Sidebar + Content */}
-      <div className={`flex-1 overflow-hidden w-full px-0 py-2 max-w-none`}>
+      <div className="flex-1 w-full px-0 py-2 max-w-none overflow-hidden">
         {/* Mobile sidebar toggle (hamburger) */}
         <div className="mb-2 lg:hidden flex justify-start px-2">
           <button
@@ -213,7 +215,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div className="relative lg:flex lg:space-x-6 h-full">
+        <div className="relative lg:flex lg:space-x-6 h-full px-2">
           {/* Sidebar */}
           {/* Mobile Drawer */}
           {isSidebarOpen && (
@@ -226,7 +228,7 @@ export default function Dashboard() {
                     return (
                       <button
                         key={tab.id}
-                        onClick={() => { setActiveTab(tab.id as any); setIsSidebarOpen(false) }}
+                        onClick={() => { setActiveTab(tab.id as TabId); setIsSidebarOpen(false) }}
                         className={`flex items-center justify-start gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                           isActive ? 'bg-white text-slate-800 shadow border border-slate-200/60' : 'text-slate-600 hover:text-slate-800 hover:bg-white/40'
                         }`}
@@ -270,10 +272,10 @@ export default function Dashboard() {
 
           {/* Content Area */}
           <section className="lg:w-4/5 w-full h-full overflow-hidden">
-            <div className={`${
+            <div className={`h-full ${
               activeTab === 'chat'
-                ? 'bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6 lg:p-8 h-full'
-                : 'bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6 h-full'
+                ? 'bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6 lg:p-8'
+                : 'bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6'
             }`}>
               {activeTab === 'chat' && (
                 <div className="relative h-full">
@@ -296,7 +298,7 @@ export default function Dashboard() {
                       )}
                     </button>
                   </div>
-                  <div className="h-full overflow-auto">
+                  <div className="h-full overflow-y-auto scrollbar-none-mobile">
                     <ChatInterface isMaximized={isChatMaximized} />
                   </div>
                 </div>
