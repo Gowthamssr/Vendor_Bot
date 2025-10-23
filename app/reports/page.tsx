@@ -388,7 +388,7 @@ export default function ReportsPage() {
             <Filter className="h-5 w-5 text-slate-600 mr-2" />
             <h3 className="text-lg font-semibold text-slate-800">Filter & Date Range</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Start Date */}
             <div className="group">
@@ -397,10 +397,10 @@ export default function ReportsPage() {
                 Start Date
               </label>
               <div className="relative">
-                <input 
-                  type="date" 
-                  value={startDate} 
-                  onChange={e => setStartDate(e.target.value)} 
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={e => setStartDate(e.target.value)}
                   className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-700 bg-slate-50/50 
                            focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100 
                            transition-all duration-300 ease-in-out
@@ -409,7 +409,7 @@ export default function ReportsPage() {
                            [&::-webkit-calendar-picker-indicator]:opacity-70 
                            [&::-webkit-calendar-picker-indicator]:hover:opacity-100
                            [&::-webkit-calendar-picker-indicator]:cursor-pointer
-                           [&::-webkit-calendar-picker-indicator]:transition-opacity" 
+                           [&::-webkit-calendar-picker-indicator]:transition-opacity"
                 />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
@@ -422,10 +422,10 @@ export default function ReportsPage() {
                 End Date
               </label>
               <div className="relative">
-                <input 
-                  type="date" 
-                  value={endDate} 
-                  onChange={e => setEndDate(e.target.value)} 
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={e => setEndDate(e.target.value)}
                   className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-700 bg-slate-50/50 
                            focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100 
                            transition-all duration-300 ease-in-out
@@ -434,7 +434,7 @@ export default function ReportsPage() {
                            [&::-webkit-calendar-picker-indicator]:opacity-70 
                            [&::-webkit-calendar-picker-indicator]:hover:opacity-100
                            [&::-webkit-calendar-picker-indicator]:cursor-pointer
-                           [&::-webkit-calendar-picker-indicator]:transition-opacity" 
+                           [&::-webkit-calendar-picker-indicator]:transition-opacity"
                 />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
@@ -447,9 +447,9 @@ export default function ReportsPage() {
                 Product Filter
               </label>
               <div className="relative">
-                <select 
-                  value={productFilter} 
-                  onChange={e => setProductFilter(e.target.value)} 
+                <select
+                  value={productFilter}
+                  onChange={e => setProductFilter(e.target.value)}
                   className="w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-slate-700 bg-slate-50/50 
                            focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100 
                            transition-all duration-300 ease-in-out
@@ -474,8 +474,8 @@ export default function ReportsPage() {
             <div className="flex flex-col gap-3">
               <div className="text-sm font-medium text-slate-700 mb-2 opacity-0">Actions</div>
               <div className="flex flex-col gap-2">
-                <button 
-                  onClick={() => { setStartDate(''); setEndDate(''); setProductFilter(''); resetZoom(); }} 
+                <button
+                  onClick={() => { setStartDate(''); setEndDate(''); setProductFilter(''); resetZoom(); }}
                   className="inline-flex items-center justify-center px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium text-slate-700 bg-slate-50/50 
                            hover:bg-white hover:border-slate-300 hover:shadow-md
                            focus:outline-none focus:ring-4 focus:ring-slate-100 focus:border-slate-400
@@ -485,8 +485,8 @@ export default function ReportsPage() {
                   Reset All
                 </button>
                 {isZoomed && (
-                  <button 
-                    onClick={resetZoom} 
+                  <button
+                    onClick={resetZoom}
                     className="inline-flex items-center justify-center px-4 py-3 border-2 border-blue-200 rounded-xl text-sm font-medium text-blue-700 bg-blue-50 
                              hover:bg-blue-100 hover:border-blue-300 hover:shadow-md
                              focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400
@@ -505,8 +505,8 @@ export default function ReportsPage() {
               <span className="text-sm font-medium text-slate-600">Quick Date Selection</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              <button 
-                onClick={() => { const t = getTodayYmdInTimeZone(tz); setStartDate(t); setEndDate(t); }} 
+              <button
+                onClick={() => { const t = getTodayYmdInTimeZone(tz); setStartDate(t); setEndDate(t); }}
                 className="px-4 py-2 text-sm font-medium border-2 border-emerald-200 rounded-xl bg-emerald-50 text-emerald-700 
                          hover:bg-emerald-100 hover:border-emerald-300 hover:shadow-md hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400
@@ -514,8 +514,8 @@ export default function ReportsPage() {
               >
                 Today
               </button>
-              <button 
-                onClick={() => { const y = getRelativeYmdInTimeZone(-1, tz); setStartDate(y); setEndDate(y); }} 
+              <button
+                onClick={() => { const y = getRelativeYmdInTimeZone(-1, tz); setStartDate(y); setEndDate(y); }}
                 className="px-4 py-2 text-sm font-medium border-2 border-amber-200 rounded-xl bg-amber-50 text-amber-700 
                          hover:bg-amber-100 hover:border-amber-300 hover:shadow-md hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-amber-100 focus:border-amber-400
@@ -523,8 +523,8 @@ export default function ReportsPage() {
               >
                 Yesterday
               </button>
-              <button 
-                onClick={() => { const end = getTodayYmdInTimeZone(tz); const start = getRelativeYmdInTimeZone(-6, tz); setStartDate(start); setEndDate(end); }} 
+              <button
+                onClick={() => { const end = getTodayYmdInTimeZone(tz); const start = getRelativeYmdInTimeZone(-6, tz); setStartDate(start); setEndDate(end); }}
                 className="px-4 py-2 text-sm font-medium border-2 border-blue-200 rounded-xl bg-blue-50 text-blue-700 
                          hover:bg-blue-100 hover:border-blue-300 hover:shadow-md hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400
@@ -532,8 +532,8 @@ export default function ReportsPage() {
               >
                 Last 7 Days
               </button>
-              <button 
-                onClick={() => { const end = getTodayYmdInTimeZone(tz); const d = new Date(end + 'T00:00:00Z'); const first = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1)); const y = first.getUTCFullYear(); const m = String(first.getUTCMonth() + 1).padStart(2, '0'); const day = String(first.getUTCDate()).padStart(2, '0'); setStartDate(`${y}-${m}-${day}`); setEndDate(end); }} 
+              <button
+                onClick={() => { const end = getTodayYmdInTimeZone(tz); const d = new Date(end + 'T00:00:00Z'); const first = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1)); const y = first.getUTCFullYear(); const m = String(first.getUTCMonth() + 1).padStart(2, '0'); const day = String(first.getUTCDate()).padStart(2, '0'); setStartDate(`${y}-${m}-${day}`); setEndDate(end); }}
                 className="px-4 py-2 text-sm font-medium border-2 border-purple-200 rounded-xl bg-purple-50 text-purple-700 
                          hover:bg-purple-100 hover:border-purple-300 hover:shadow-md hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-400
@@ -541,13 +541,13 @@ export default function ReportsPage() {
               >
                 This Month
               </button>
-              <button 
-                onClick={() => { 
-                  const end = getTodayYmdInTimeZone(tz); 
-                  const start = getRelativeYmdInTimeZone(-29, tz); 
-                  setStartDate(start); 
-                  setEndDate(end); 
-                }} 
+              <button
+                onClick={() => {
+                  const end = getTodayYmdInTimeZone(tz);
+                  const start = getRelativeYmdInTimeZone(-29, tz);
+                  setStartDate(start);
+                  setEndDate(end);
+                }}
                 className="px-4 py-2 text-sm font-medium border-2 border-indigo-200 rounded-xl bg-indigo-50 text-indigo-700 
                          hover:bg-indigo-100 hover:border-indigo-300 hover:shadow-md hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400
