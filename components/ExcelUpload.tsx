@@ -153,7 +153,7 @@ export default function ExcelUpload() {
             <ul className="space-y-1 text-xs">
               <li>• Column A: Product Name (text)</li>
               <li>• Column B: Quantity (number)</li>
-              <li>• Column C: Price Whole(number)</li>
+              <li>• Column C: Price Per unit(number)</li>
               <li>• Column D: Sale Date (YYYY-MM-DD format)</li>
             </ul>
           </div>

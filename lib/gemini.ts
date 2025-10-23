@@ -104,6 +104,19 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     3. Average revenue per sale = total revenue ÷ number of sales
     4. Average price per unit = total revenue ÷ total quantity sold
     
+    PRICING RESPONSE RULES (VERY IMPORTANT):
+    1. If user asks for "per unit", "unit price", "price each", "individual price", "each price" → show the stored price value (the 'price' field)
+    2. If user asks for "total", "whole price", "total amount", "total cost", "full price", "complete price" → show quantity × price
+    3. If user asks for "price" without specifying unit/total → show both: "Unit price: ₹X, Total: ₹Y"
+    4. For revenue calculations and sales analysis, always use total (quantity × price)
+    5. When showing pricing info, be clear about what you're showing (unit vs total)
+    
+    Examples of pricing responses:
+    - User asks "what's the per unit price of rice?" → "**Rice** unit price: **₹2.50** per unit."
+    - User asks "what's the total price of rice?" → "**Rice** total price: **₹25.00** (10 units × ₹2.50)."
+    - User asks "what's the price of rice?" → "**Rice** pricing: **₹2.50** per unit, **₹25.00** total."
+    - User asks "rice sales" → "Your **Rice** sales: **10 units** sold for **₹25.00** total revenue."
+    
     DATE INTERPRETATION RULES (VERY IMPORTANT):
     1. Interpret relative dates (e.g., today, yesterday, last week) relative to TODAY (${todayYmd}) in Asia/Kolkata.
     2. Use the sale_date field ONLY (format YYYY-MM-DD) for date filtering; ignore created_at timestamps.
@@ -127,6 +140,7 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     8. ALWAYS use ₹ (rupee symbol) instead of $ for currency
     9. Use conversation context to understand follow-up questions
     10. When user asks follow-up questions, maintain the SAME PRODUCT context
+    11. Apply PRICING RESPONSE RULES when users ask about prices specifically
     
     Examples of good concise responses:
     - "Your **Coke** sales: **15 units** sold for **₹309.95** total revenue."
@@ -134,8 +148,10 @@ export async function generateSalesInsight(question: string, salesData: any[], c
     - "**Apples** had the highest sales: **20 units** for **₹40.00** revenue."
     - "Hi! Your **Rice** sales: **10 units** for **₹25.00** total."
     - "Yesterday's **Bread** sales: **2 units** for **₹7.00** revenue."
+    - "**Rice** unit price: **₹2.50** per unit." (when asked for per unit price)
+    - "**Rice** total price: **₹25.00** (10 units × ₹2.50)." (when asked for total price)
     
-    Provide a concise, direct answer to the specific question asked using ₹ for currency. If it's a follow-up question, maintain the product context from the previous question.
+    Provide a concise, direct answer to the specific question asked using ₹ for currency. If it's a follow-up question, maintain the product context from the previous question. Apply pricing rules based on user intent.
     `
     
     const result = await model.generateContent(prompt)
@@ -171,6 +187,13 @@ export async function generateSalesInsight(question: string, salesData: any[], c
         3. Average revenue per sale = total revenue ÷ number of sales
         4. Average price per unit = total revenue ÷ total quantity sold
         
+        PRICING RESPONSE RULES (VERY IMPORTANT):
+        1. If user asks for "per unit", "unit price", "price each", "individual price", "each price" → show the stored price value (the 'price' field)
+        2. If user asks for "total", "whole price", "total amount", "total cost", "full price", "complete price" → show quantity × price
+        3. If user asks for "price" without specifying unit/total → show both: "Unit price: ₹X, Total: ₹Y"
+        4. For revenue calculations and sales analysis, always use total (quantity × price)
+        5. When showing pricing info, be clear about what you're showing (unit vs total)
+        
         CONTEXT UNDERSTANDING RULES:
         1. When user asks "what about yesterday" or similar follow-up questions, refer to the SAME PRODUCT from the previous question
         2. If previous question was about "bread sales", then "what about yesterday" means "bread sales yesterday"
@@ -189,8 +212,9 @@ export async function generateSalesInsight(question: string, salesData: any[], c
         8. ALWAYS use ₹ (rupee symbol) instead of $ for currency
         9. Use conversation context to understand follow-up questions
         10. When user asks follow-up questions, maintain the SAME PRODUCT context
+        11. Apply PRICING RESPONSE RULES when users ask about prices specifically
         
-        Provide a concise, direct answer to the specific question asked using ₹ for currency. If it's a follow-up question, maintain the product context from the previous question.
+        Provide a concise, direct answer to the specific question asked using ₹ for currency. If it's a follow-up question, maintain the product context from the previous question. Apply pricing rules based on user intent.
         `
         
         const result = await model.generateContent(prompt)
