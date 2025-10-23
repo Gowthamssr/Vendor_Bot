@@ -113,13 +113,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Get sales data for the vendor
-    const salesData = await getSalesByVendor(decoded.userId)
+    const rawSalesData = await getSalesByVendor(decoded.userId)
     
-    if (salesData.length === 0) {
+    if (rawSalesData.length === 0) {
       return NextResponse.json({
         response: "I don't see any sales data in your account yet. You can add sales data using the 'Manual Entry', 'Natural Language', or 'Bulk Upload' tabs, and then I'll be able to help you analyze it!"
       })
     }
+
+    // Pre-calculate totals to avoid AI calculation errors
+    const salesData = rawSalesData.map(sale => ({
+      ...sale,
+      unit_price: Number(sale.price),
+      total_revenue: Number(sale.quantity) * Number(sale.price),
+      // Keep original price field for reference
+      price_per_unit: Number(sale.price)
+    }))
 
     // Generate insight using Gemini API with conversation history
     const insight = await generateSalesInsight(trimmedQuestion, salesData, conversationHistory)
