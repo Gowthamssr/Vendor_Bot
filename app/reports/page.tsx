@@ -319,10 +319,10 @@ export default function ReportsPage() {
           const avgPrice = product.quantity > 0 ? (product.revenue / product.quantity).toFixed(2) : '0'
 
           productData.push([
-            index + 1,
+            (index + 1).toString(),
             product.product_name,
             product.lastSaleDate,
-            product.quantity,
+            product.quantity.toString(),
             product.revenue.toFixed(2),
             avgPrice,
             percentage + '%'
@@ -342,7 +342,7 @@ export default function ReportsPage() {
           transactionData.push([
             sale.sale_date,
             sale.product_name,
-            sale.quantity,
+            sale.quantity.toString(),
             Number(sale.price).toFixed(2),
             totalAmount
           ])
